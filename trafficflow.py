@@ -67,10 +67,4 @@ if(northOrSouth is 's'):
 
 
 print(myData)
-saveCsvFile.saveFile(myData,bound,streetName[streetChoice-1].replace(" ","_"))
-
-
-
-
-
-
+saveCsvFile.saveFile(myData,bound,streetName[streetChoice-1].replace(" ","_").lower())
