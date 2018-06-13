@@ -21,7 +21,9 @@ with open('trafficflowStatus.json') as f:
 # getting direction whether north or south
 while True:
     northOrSouth = input('n = northbound / s = southbound: ')
-    if northOrSouth is 'n' or 's':
+    if 'n' in northOrSouth:
+        break
+    elif 's' in northOrSouth:
         break
     else:
         print('Invalid Input')
@@ -42,28 +44,6 @@ while True:
             break
     except:
         print("Invalid Input!")
-
-# process if northbound
-if(northOrSouth is 'n'):
-    for data in range(len(trafficData)):
-        bound = 'Northbound'
-        if streetName[streetChoice-1] in trafficData[data].get('line'):
-            tempData = []
-            status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
-            street = trafficData[data].get('line')
-            tempData = [street,status,'1','100']
-            myData.append(tempData)
-
-# process if southbound
-if(northOrSouth is 's'):
-    for data in range(len(trafficData)):
-        bound = 'Southbound'
-        if streetName[streetChoice-1] in trafficData[data].get('line'):
-            tempData = []
-            status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
-            street = trafficData[data].get('line')
-            tempData = [street,status,'1','100']
-            myData.append(tempData)
 
 
 print(myData)
