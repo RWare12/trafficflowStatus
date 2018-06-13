@@ -14,6 +14,7 @@ streetName = ['QUEZON AVE','ORTIGAS','ESPAA','C5','EDSA','SLEX','COMMONWEALTH','
 myData = []
 myData.append(csvHeader)
 
+# getting direction whether north or south
 while True:
     northOrSouth = input('n = northbound / s = southbound: ')
     if northOrSouth is 'n' or 's':
@@ -25,6 +26,7 @@ while True:
 for sName in range(len(streetName)):
     print(sName+1,'-'+streetName[sName])
 
+# getting specific street
 while True:
     try:
         streetChoice = int(input('Enter Street[1-9]: '))
@@ -37,9 +39,7 @@ while True:
     except:
         print("Invalid Input!")
 
-print(streetName[streetChoice-1])
-
-
+# process if northbound
 if(northOrSouth is 'n'):
     with open('trafficflowStatus.json') as f:
         trafficData = json.load(f)
@@ -52,7 +52,7 @@ if(northOrSouth is 'n'):
                 tempData = [street,status,'1','100']
                 myData.append(tempData)
 
-
+# process if southbound
 if(northOrSouth is 's'):
     with open('trafficflowStatus.json') as f:
         trafficData = json.load(f)
