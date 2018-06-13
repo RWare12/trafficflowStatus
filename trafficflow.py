@@ -1,61 +1,74 @@
 import json
 import csv
+import saveCsvFile
 
 # light - 25
 # mod - 50
 # heavy - 75
 
 northOrSouth = ''
+streetChoice = ''
+bound = ''
 csvHeader = ['Street','Status','Lane Points','% Observed']
+streetName = ['QUEZON AVE','ORTIGAS','ESPAA','C5','EDSA','SLEX','COMMONWEALTH','ROXAS_BLVD','MARCOS_HIGHWAY']
 myData = []
 myData.append(csvHeader)
 
-# while (northOrSouth is not 'n' or northOrSouth is not 's'):
-#     northOrSouth = input('n = northbound / s = southbound: ')
+while True:
+    northOrSouth = input('n = northbound / s = southbound: ')
+    if northOrSouth is 'n' or 's':
+        break
+    else:
+        print('Invalid Input')
 
-    # if(northOrSouth is 'n'):
-with open('northbound.json') as f:
-    trafficData = json.load(f)
-    for data in range(len(trafficData)):
-        tempData = []
-        status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
-        street = trafficData[data].get('line')
-        tempData = [street,status,'1','100']
-        myData.append(tempData)
-            
+    
+for sName in range(len(streetName)):
+    print(sName+1,'-'+streetName[sName])
+
+while True:
+    try:
+        streetChoice = int(input('Enter Street[1-9]: '))
+        if(streetChoice > 9):
+            print("Invalid Input")
+        elif(streetChoice < 0):
+            print("Invalid Input")
+        else:
+            break
+    except:
+        print("Invalid Input!")
+
+print(streetName[streetChoice-1])
 
 
-# with open('northbound.json') as f:
-#     data = json.load(f)
+if(northOrSouth is 'n'):
+    with open('trafficflowStatus.json') as f:
+        trafficData = json.load(f)
+        for data in range(len(trafficData)):
+            bound = 'Northbound'
+            if streetName[streetChoice-1] in trafficData[data].get('line'):
+                tempData = []
+                status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
+                street = trafficData[data].get('line')
+                tempData = [street,status,'1','100']
+                myData.append(tempData)
 
-# print(data[0].get("northbound").get("status"))
 
-
-# print(data[0])
-# print(data[0].get("northbound"))
-
-
-# print(data[0].get("southbound"))
-# print(data[0].get("southbound").get("status"))
-
-# print(data[0].get('line'))
-# print(myData)
-# train = []
-# train = ['asdsasa','asdsadas','adsad','adsad']
-# myData.append(train)
-# train = []
-# train = ['asdsasa','asdsadas','adsad','adsad']
-# myData.append(train)
-
-myFile = open('example2.csv', 'w')
-with myFile:
-    writer = csv.writer(myFile)
-    writer.writerows(myData)
-     
-print("Writing complete")
+if(northOrSouth is 's'):
+    with open('trafficflowStatus.json') as f:
+        trafficData = json.load(f)
+        for data in range(len(trafficData)):
+            bound = 'Southbound'
+            if streetName[streetChoice-1] in trafficData[data].get('line'):
+                tempData = []
+                status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
+                street = trafficData[data].get('line')
+                tempData = [street,status,'1','100']
+                myData.append(tempData)
 
 
 print(myData)
+saveCsvFile.saveFile(myData,bound,streetName[streetChoice-1])
+
 
 
 
