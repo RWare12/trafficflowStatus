@@ -10,9 +10,13 @@ northOrSouth = ''
 streetChoice = ''
 bound = ''
 csvHeader = ['Street','Status','Lane Points','% Observed']
-streetName = ['QUEZON AVE','ORTIGAS','ESPAA','C5','EDSA','SLEX','COMMONWEALTH','ROXAS_BLVD','MARCOS_HIGHWAY']
+streetName = ['QUEZON AVE','ORTIGAS','ESPAA','C5','EDSA','SLEX','COMMONWEALTH','ROXAS BLVD','MARCOS HIGHWAY']
 myData = []
 myData.append(csvHeader)
+trafficData = ''
+
+with open('trafficflowStatus.json') as f:
+    trafficData = json.load(f)
 
 # getting direction whether north or south
 while True:
@@ -41,33 +45,29 @@ while True:
 
 # process if northbound
 if(northOrSouth is 'n'):
-    with open('trafficflowStatus.json') as f:
-        trafficData = json.load(f)
-        for data in range(len(trafficData)):
-            bound = 'Northbound'
-            if streetName[streetChoice-1] in trafficData[data].get('line'):
-                tempData = []
-                status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
-                street = trafficData[data].get('line')
-                tempData = [street,status,'1','100']
-                myData.append(tempData)
+    for data in range(len(trafficData)):
+        bound = 'Northbound'
+        if streetName[streetChoice-1] in trafficData[data].get('line'):
+            tempData = []
+            status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
+            street = trafficData[data].get('line')
+            tempData = [street,status,'1','100']
+            myData.append(tempData)
 
 # process if southbound
 if(northOrSouth is 's'):
-    with open('trafficflowStatus.json') as f:
-        trafficData = json.load(f)
-        for data in range(len(trafficData)):
-            bound = 'Southbound'
-            if streetName[streetChoice-1] in trafficData[data].get('line'):
-                tempData = []
-                status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
-                street = trafficData[data].get('line')
-                tempData = [street,status,'1','100']
-                myData.append(tempData)
+    for data in range(len(trafficData)):
+        bound = 'Southbound'
+        if streetName[streetChoice-1] in trafficData[data].get('line'):
+            tempData = []
+            status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
+            street = trafficData[data].get('line')
+            tempData = [street,status,'1','100']
+            myData.append(tempData)
 
 
 print(myData)
-saveCsvFile.saveFile(myData,bound,streetName[streetChoice-1])
+saveCsvFile.saveFile(myData,bound,streetName[streetChoice-1].replace(" ","_"))
 
 
 
