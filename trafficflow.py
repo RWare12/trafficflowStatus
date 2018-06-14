@@ -9,11 +9,13 @@ import saveCsvFile
 northOrSouth = ''
 streetChoice = ''
 bound = ''
-csvHeader = ['Street','Status','Lane Points','% Observed']
+finalTime = ''
+trafficData = ''
+csvHeader = ['5 Minutes','Lane 1 Flow (Veh/5 Minutes)','Lane Points','% Observed']
 streetName = ['QUEZON AVE','ORTIGAS','ESPAA','C5','EDSA','SLEX','COMMONWEALTH','ROXAS BLVD','MARCOS HIGHWAY']
 myData = []
 myData.append(csvHeader)
-trafficData = ''
+
 
 with open('trafficflowStatus.json') as f:
     trafficData = json.load(f)
@@ -53,8 +55,14 @@ if(northOrSouth is 'n'):
         if streetName[streetChoice-1].replace(" AVE","").replace(" BLVD","").replace(" HIGHWAY","") in sStreet[0]:
             tempData = []
             status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
-            street = trafficData[data].get('line')
-            tempData = [street,status,'1','100']
+            # street = trafficData[data].get('line')
+            timePosted = trafficData[data].get('northbound').get('time_updated')
+            if 'pm' in timePosted:
+                tempTime = int(timePosted[:1]) + 12
+                finalTime = timePosted.replace(timePosted[:1],str(tempTime),1)
+            else:
+                finalTime = timePosted
+            tempData = [finalTime,status,'1','100']
             myData.append(tempData)
 
 # process if southbound
@@ -64,9 +72,15 @@ if(northOrSouth is 's'):
         sStreet = trafficData[data].get('line').split(' ')
         if streetName[streetChoice-1].replace(" AVE","").replace(" BLVD","").replace(" HIGHWAY","") in sStreet[0]:
             tempData = []
-            status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
-            street = trafficData[data].get('line')
-            tempData = [street,status,'1','100']
+            status = trafficData[data].get('southbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
+            # street = trafficData[data].get('line')
+            timePosted = trafficData[data].get('northbound').get('time_updated')
+            if 'pm' in timePosted:
+                tempTime = int(timePosted[:1]) + 12
+                finalTime = timePosted.replace(timePosted[:1],str(tempTime),1)
+            else:
+                finalTime = timePosted
+            tempData = [finalTime,status,'1','100']
             myData.append(tempData)
 
 print(myData)
