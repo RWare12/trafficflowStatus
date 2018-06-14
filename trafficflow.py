@@ -45,6 +45,29 @@ while True:
     except:
         print("Invalid Input!")
 
+# process if northbound
+if(northOrSouth is 'n'):
+    for data in range(len(trafficData)):
+        bound = 'Northbound'
+        sStreet = trafficData[data].get('line').split(' ')
+        if streetName[streetChoice-1].replace(" AVE","").replace(" BLVD","").replace(" HIGHWAY","") in sStreet[0]:
+            tempData = []
+            status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
+            street = trafficData[data].get('line')
+            tempData = [street,status,'1','100']
+            myData.append(tempData)
+
+# process if southbound
+if(northOrSouth is 's'):
+    for data in range(len(trafficData)):
+        bound = 'Southbound'
+        sStreet = trafficData[data].get('line').split(' ')
+        if streetName[streetChoice-1].replace(" AVE","").replace(" BLVD","").replace(" HIGHWAY","") in sStreet[0]:
+            tempData = []
+            status = trafficData[data].get('northbound').get('status').replace('light','25').replace('mod','50').replace('heavy','75')
+            street = trafficData[data].get('line')
+            tempData = [street,status,'1','100']
+            myData.append(tempData)
 
 print(myData)
-saveCsvFile.saveFile(myData,bound,streetName[streetChoice-1].replace(" ","_").lower())
+saveCsvFile.saveFile(myData,bound.lower(),streetName[streetChoice-1].replace(" ","_").lower())
